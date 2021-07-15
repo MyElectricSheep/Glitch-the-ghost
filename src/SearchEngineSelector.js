@@ -1,31 +1,17 @@
 import React, { useState } from "react";
-import { Search, Google, Edge, Bug, Actions, Close } from "grommet-icons";
 import ClickAwayListener from "react-click-away-listener";
-
+import { Close } from "grommet-icons";
 import { Grommet, Box, Button, DropButton, Heading } from "grommet";
 import { grommet } from "grommet/themes";
+import { searchEnginesSelectors } from "./engines";
 
 const DropContent = ({ onClose, onSelectSearchEngine }) => {
   const [isShown, setIsShown] = useState();
-  const searchEngines = [
-    { name: "Google", icon: Google },
-    {
-      name: "Bing",
-      icon: Edge,
-    },
-    {
-      name: "WebCrawler",
-      icon: Bug,
-    },
-    { name: "WolframAlpha", icon: Actions },
-    { name: "Baidu", icon: Search },
-    { name: "DogPile", icon: Search },
-    { name: "Info", icon: Search },
-  ];
+
   return (
     <ClickAwayListener onClickAway={onClose}>
       <Box pad="small">
-        {searchEngines.map(({ name, icon: Icon }) => {
+        {searchEnginesSelectors.map(({ name, icon: Icon }) => {
           return (
             <Box
               direction="row"

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Avatar, Anchor, Box, Grommet, Header, Nav } from "grommet";
-import { grommet } from "grommet/themes";
+import { Anchor, Box, Text, Header, Nav } from "grommet";
 
 import SearchEngineSelector from "./SearchEngineSelector";
 import { Ghost } from "react-kawaii";
@@ -32,7 +31,7 @@ const LaunchNav = ({ onReset, onSelectSearchEngine }) => {
       <Box direction="row" align="center" gap="small">
         <Ghost size={40} mood={mood} color="#FFFFFF" />
         <Anchor color="white" onClick={onReset}>
-          Glitch
+          <Text size="xxlarge">Glitch</Text>
         </Anchor>
       </Box>
       <Nav direction="row">

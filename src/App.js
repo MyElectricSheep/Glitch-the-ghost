@@ -1,21 +1,31 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-// import Speech from "react-speech";
+
+import { Switch, Route, useHistory } from "react-router-dom";
+import Iframe from "react-iframe";
+
+// Speech recognition & synthesis
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import { useSpeechSynthesis } from "react-speech-kit";
+
+// Search engines utils
+import { defaultSearchEngine, searchEngines } from "./engines";
+
+// Custom components
 import Launch from "./Launch";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
-import Iframe from "react-iframe";
-import { Switch, Route, useHistory } from "react-router-dom";
+import VolumeControl from "./VolumeControl";
 
-function App() {
-  const defaultSearchEngine = "https://www.google.com/search?igu=1&ei=&q=";
-
+const App = () => {
   const history = useHistory();
 
+  const [mute, setMute] = useState(false);
   const [searchEngine, setSearchEngine] = useState(defaultSearchEngine);
+
+  const onEnd = () => setMute(true);
 
   const {
     transcript,
@@ -23,6 +33,14 @@ function App() {
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
+  const {
+    speak,
+    voices,
+    speaking,
+    supported: browserSupportsSpeechSynthesis,
+  } = useSpeechSynthesis({
+    onEnd,
+  });
 
   useEffect(() => {
     if (!listening && transcript) {
@@ -30,8 +48,13 @@ function App() {
     }
   }, [history, listening, transcript]);
 
-  if (!browserSupportsSpeechRecognition) {
-    return <span>Browser doesn't support speech recognition.</span>;
+  if (!browserSupportsSpeechRecognition || !browserSupportsSpeechSynthesis) {
+    return (
+      <span>
+        Your browser doesn't support speech recognition, please consider
+        upgrading to a modern browser, such as Chrome
+      </span>
+    );
   }
 
   const handleReset = () => {
@@ -41,16 +64,16 @@ function App() {
   };
 
   const handleSelectSearchEngine = (name) => {
-    const searchEngines = {
-      Google: "https://www.google.com/search?igu=1&ei=&q=",
-      Bing: "https://bing.com/search?q=",
-      Baidu: "https://www.baidu.com/s?wd=",
-      WebCrawler: "https://www.webcrawler.com/serp?q=",
-      WolframAlpha: "https://www.wolframalpha.com/input/?i=",
-      DogPile: "https://www.dogpile.com/search/web?q=",
-      Info: "https://www.info.com/serp?q=",
-    };
     setSearchEngine(searchEngines[name]);
+  };
+
+  const handleGreet = () => {
+    if (!mute && !speaking) {
+      speak({
+        text: "Hi. I am Glitch the ghost. Click me and say something!",
+        voice: voices[3] || null,
+      });
+    }
   };
 
   return (
@@ -73,7 +96,9 @@ function App() {
           <Footer onReset={handleReset} />
         </Route>
         <Route path="/">
+          <VolumeControl mute={mute} setMute={setMute} />
           <Launch
+            onGreet={handleGreet}
             onStart={SpeechRecognition.startListening}
             onStop={SpeechRecognition.stopListening}
             language="en-US"
@@ -87,15 +112,6 @@ function App() {
       </Switch>
     </div>
   );
-}
+};
 
 export default App;
-
-// ToDo: add speech feature for the ghost
-//  <Speech
-//   stop={true}
-//   pause={true}
-//   resume={true}
-//   lang="en-GB"
-//   voice="Google UK English Male"
-//   text="Hi, my name is Glitch the ghost, how can I help you?" />
