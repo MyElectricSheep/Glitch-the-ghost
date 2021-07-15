@@ -1,18 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 // import Speech from "react-speech";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import Launch from "./Launch";
+import Footer from "./Footer";
+import Navbar from "./Navbar";
 import Iframe from "react-iframe";
-import { Switch, Route, useHistory, useLocation } from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 
 function App() {
-  const history = useHistory();
-  const location = useLocation();
+  const defaultSearchEngine = "https://www.google.com/search?igu=1&ei=&q=";
 
-  console.log(location);
+  const history = useHistory();
+
+  const [searchEngine, setSearchEngine] = useState(defaultSearchEngine);
 
   const {
     transcript,
@@ -33,16 +36,33 @@ function App() {
 
   const handleReset = () => {
     resetTranscript();
+    setSearchEngine(defaultSearchEngine);
     history.push("/");
+  };
+
+  const handleSelectSearchEngine = (name) => {
+    const searchEngines = {
+      Google: "https://www.google.com/search?igu=1&ei=&q=",
+      Bing: "https://bing.com/search?q=",
+      Baidu: "https://www.baidu.com/s?wd=",
+      WebCrawler: "https://www.webcrawler.com/serp?q=",
+      WolframAlpha: "https://www.wolframalpha.com/input/?i=",
+      DogPile: "https://www.dogpile.com/search/web?q=",
+      Info: "https://www.info.com/serp?q=",
+    };
+    setSearchEngine(searchEngines[name]);
   };
 
   return (
     <div className="main-wrapper">
       <Switch>
         <Route path="/result">
-          {/* TODO: Add navbar component */}
+          <Navbar
+            onReset={handleReset}
+            onSelectSearchEngine={handleSelectSearchEngine}
+          />
           <Iframe
-            url={`https://bing.com/search?q=${transcript}`}
+            url={`${searchEngine}${transcript}`}
             width="100%"
             height="100%"
             id="myId"
@@ -50,7 +70,7 @@ function App() {
             display="initial"
             position="relative"
           />
-          <button onClick={handleReset}>New Glitch</button>
+          <Footer onReset={handleReset} />
         </Route>
         <Route path="/">
           <Launch
@@ -78,4 +98,4 @@ export default App;
 //   resume={true}
 //   lang="en-GB"
 //   voice="Google UK English Male"
-//   text="Something to say" />
+//   text="Hi, my name is Glitch the ghost, how can I help you?" />
