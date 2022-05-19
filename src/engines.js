@@ -5,7 +5,7 @@ const defaultSearchEngine = "https://www.google.com/search?igu=1&ei=&q=";
 const searchEngines = {
   Google: "https://www.google.com/search?igu=1&ei=&q=",
   Bing: "https://bing.com/search?q=",
-  Baidu: "https://www.baidu.com/s?wd=",
+  // Baidu: "https://www.baidu.com/s?wd=",
   WebCrawler: "https://www.webcrawler.com/serp?q=",
   WolframAlpha: "https://www.wolframalpha.com/input/?i=",
   DogPile: "https://www.dogpile.com/search/web?q=",
@@ -23,7 +23,7 @@ const searchEnginesSelectors = [
     icon: Bug,
   },
   { name: "WolframAlpha", icon: Actions },
-  { name: "Baidu", icon: Search },
+  // { name: "Baidu", icon: Search },
   { name: "DogPile", icon: Search },
   { name: "Info", icon: Search },
 ];

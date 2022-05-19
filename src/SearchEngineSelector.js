@@ -11,9 +11,10 @@ const DropContent = ({ onClose, onSelectSearchEngine }) => {
   return (
     <ClickAwayListener onClickAway={onClose}>
       <Box pad="small">
-        {searchEnginesSelectors.map(({ name, icon: Icon }) => {
+        {searchEnginesSelectors.map(({ name, icon: Icon }, index) => {
           return (
             <Box
+              key={index}
               direction="row"
               justify="between"
               align="center"

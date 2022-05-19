@@ -61,18 +61,38 @@ const App = () => {
     resetTranscript();
     setSearchEngine(defaultSearchEngine);
     history.push("/");
+    setMute(false);
   };
 
   const handleSelectSearchEngine = (name) => {
     setSearchEngine(searchEngines[name]);
   };
 
-  const handleGreet = () => {
+  const handleGreet = (e) => {
+    console.log({
+      mute,
+      speaking,
+    });
+
     if (!mute && !speaking) {
-      speak({
-        text: "Hi. I am Glitch the ghost. Click me and say something!",
-        voice: voices[3] || null,
-      });
+      try {
+        const enVoices = voices?.filter((voice) => voice.lang.startsWith("en"));
+        const randomVoice =
+          enVoices && enVoices.length
+            ? enVoices[Math.floor(Math.random() * enVoices.length)]
+            : null;
+        document.querySelector(".main-wrapper").click();
+        speak({
+          text: "Hi. I am Glitch the ghost. Click me and say something!",
+          voice: randomVoice,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      listening
+        ? SpeechRecognition.stopListening()
+        : SpeechRecognition.startListening({ language: "en-US" });
     }
   };
 
@@ -97,13 +117,7 @@ const App = () => {
         </Route>
         <Route path="/">
           <VolumeControl mute={mute} setMute={setMute} />
-          <Launch
-            onGreet={handleGreet}
-            onStart={SpeechRecognition.startListening}
-            onStop={SpeechRecognition.stopListening}
-            language="en-US"
-            listening={listening}
-          />
+          <Launch onGreet={handleGreet} />
           <h1>{listening && "What's on your mind?"} </h1>
           <div>
             <p>{transcript && transcript}</p>

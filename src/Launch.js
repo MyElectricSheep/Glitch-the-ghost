@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { Ghost } from "react-kawaii";
 import { styler, tween, merge, action, easing } from "popmotion";
 
-const Launch = ({ onStart, onStop, language, listening, onGreet }) => {
+const Launch = ({ onGreet }) => {
   const ghostRef = useRef();
 
   useEffect(() => {
@@ -108,8 +108,9 @@ const Launch = ({ onStart, onStop, language, listening, onGreet }) => {
   return (
     <div
       ref={ghostRef}
-      onMouseEnter={onGreet}
-      onClick={() => (listening ? onStop() : onStart({ language }))}
+      // onMouseUp={onGreet}
+      // onClick={() => (listening ? onStop() : onStart({ language }))}
+      onClick={onGreet}
       style={{ cursor: "pointer" }}
       className="wrap-image"
     >
