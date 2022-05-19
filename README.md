@@ -17,7 +17,7 @@ Ask **Glitch The Ghost** something, and it will whisk you through the multiverse
 - [React-speech-recognition](https://www.npmjs.com/package/react-speech-recognition) for the abstraction over the Web Speech API
 - [React-toastify](https://www.npmjs.com/package/react-toastify) for the notifications
 - [React-click-away-listener](https://www.npmjs.com/package/react-click-away-listener) for the click/touch/focus support
-- 
+
 ### 🚀 Live version:
 
 A live version of the app [can be played with here!](https://glitch-the-ghost.netlify.app/)
