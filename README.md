@@ -20,4 +20,4 @@ Ask **Glitch The Ghost** something, and it will whisk you through the multiverse
 
 ### 🚀 Live version:
 
-A live version of the app [can be played with here!](https://glitch-the-ghost.netlify.app/)
+A live version of the app [can be played with here!](https://glitch.ben.express/)
